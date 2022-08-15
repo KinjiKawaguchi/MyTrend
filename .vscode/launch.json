@@ -10,7 +10,14 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "env": {
+                "API_KEY": "XqVkOi4GCy2e5Ty4PMfEG6GOQ",
+                "API_KEY_SECRET": "zeQWBzL3iJsLHAEzg8gCtJoDKg0hWWpgZ62d8chK7eVQHDY31Z",
+                "BEARER_TOKEN": "AAAAAAAAAAAAAAAAAAAAANZcegEAAAAA51VxgiSL34pFLnO6xp5oHMAuBE4%3D5L2wz65qvVDCiRVQWX9xMkuDVEGEI3dn6tyC9jDCoyAUqvcZjk",
+                "ACCESS_TOKEN": "1502462819861602309-kQuKoUsRRbV4IHvyjvdxAo00UM3lu6",
+                "ACCESS_TOKEN_SECRET": "ekB4jIP0YdYwnpNpL0IO2wc6ceTgjGIG6dy6Xlp32EGp5"
+            }
         }
     ]
 }
