@@ -5,3 +5,4 @@ TweepyAPIリファレンス:https://tweepy.mkuriki.com/index.html
 特定の人のツイートを全取得と、CSVファイルに出力:https://nishipy.com/archives/569
 tweepyを活用したCSVファイルの出力:https://toxublog.com/blog/get_tweet_tweepy/
 tweetID生成の秘密:https://www.slideshare.net/pfi/id-15755280
+自身の最新ツイートを取得する:https://www.ketancho.net/entry/2019/11/09/100000
