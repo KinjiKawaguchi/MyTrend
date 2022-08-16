@@ -1,11 +1,14 @@
 import csv
 from distutils.archive_util import make_archive
+from sqlite3 import paramstyle
 from unittest import expectedFailure
 import tweepy
 import os
 import datetime
 from datetime import datetime,timezone
 import pytz
+import json
+import time
 
 def change_time_JST(u_time):
     #イギリスのtimezoneを設定するために再定義する
@@ -15,7 +18,7 @@ def change_time_JST(u_time):
     jst_time = utc_time.astimezone(pytz.timezone("Asia/Tokyo"))
     # 文字列で返す
     str_time = jst_time.strftime("%Y-%m-%d_%H:%M:%S")
-    return str_time
+    return jst_time
 
 CK = os.environ.get('API_KEY')
 CS = os.environ.get('API_KEY_SECRET')
@@ -25,17 +28,46 @@ auth = tweepy.OAuthHandler(CK, CS)
 auth.set_access_token(AT, AS)
 api = tweepy.API(auth)
 
+current_time = datetime.now()
 # 全ツイートを入れる空のリストを用意
+all_tweet = []
+array = []
+#ツイート取得時の引数指定
 user = "pakkumannoteki"
-today = True
-
-all_tweets = []
 params = {
     "count": 1,
     "exclude_replies": True,
     "include_rts": False
 }
-latest_tweet = api.user_timeline(screen_name=user, params = params)
+array.extend(api.user_timeline(screen_name = user, params = params))
+latest_tweet = array[0]
+tweet_time = change_time_JST(latest_tweet.created_at)
+print(current_time - tweet_time)
+"""""
+print(latest_tweet.created_at)
+print(type(latest_tweet.created_at))
+print(current_time)
+print(type(current_time))
+time.sleep(10)
+"""
+"""
+while True:
+    latest_tweet = api.user_timeline(screen_name = user, params = params)
+    json_tweet = json.load(latest_tweet)
+    print(json_tweet['created_at'])
+    #print(current_time - change_time_JST(latest_tweet.created_at))
+"""
+"""
+    if(current_time - change_time_JST(latest_tweet.created_at) > 24):
+        print("\n\n\n\n\n\ntrue\n\n\n\n\n\n\n\n")
+        if(len(all_tweets)==0):
+            print("\n\n過去24時間に行われたツイートはありません。\n\n")
+        break
+    else:
+        print("\n\n\n\n\nfalse\n\n\n\n\n\n\n\n\n")
+    """
+
+"""
 all_tweets.extend(latest_tweet)
 
 print(latest_tweet)
@@ -44,32 +76,28 @@ with open('all_tweets.csv', 'w', newline='') as f:
     writer.writerow([
         'tweet_text', 
         'created_at', 
-        '#characters', 
-        '#favorited', 
-        '#retweeted', 
-        'hasImage', 
-        'hasBlogLink'
+        'characters', 
         ])
     for tweet in all_tweets:
         if (tweet.text.startswith('RT')) or (tweet.text.startswith('@')):
             continue # RTとリプライはスキップ
         else:
             tweet_time = change_time_JST(tweet.created_at)#ツイート時間を日本時間に変換
-            has_image = 0 # 画像付きのツイートか
-            has_bloglink = 0 # ブログへのリンク付きのツイートか
             tweet_characters = tweet.text # ツイートの文字列
-            if 'media' in tweet.entities:
-                has_image = 1
             if len(tweet.entities['urls']) > 0:
                 # urlは、文字数としてカウントしない
                 tweet_characters = tweet_characters.strip(tweet.entities['urls'][0]['url']).strip()
-                if 'nishipy.com' in tweet.entities['urls'][0]['display_url']:
-                    has_bloglink = 1
-            writer.writerow([tweet.text, tweet_time,len(tweet_characters), tweet.favorite_count, tweet.retweet_count, has_image, has_bloglink])
+            writer.writerow([tweet.text, tweet_time,len(tweet_characters)])
+"""
+
+
+
+
+
+
 
 
 """
-
 # 直近の200ツイート分を取得しておく
 latest_tweets = api.user_timeline(screen_name=user,count=200,include_rts=False)
 all_tweets.extend(latest_tweets)
