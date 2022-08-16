@@ -15,8 +15,54 @@ auth = tweepy.OAuthHandler(CK, CS)
 auth.set_access_token(AT, AS)
 api = tweepy.API(auth)
 
+# 全ツイートを入れる空のリストを用意
+user = "pakkumannoteki"
+all_tweets    = []
+today = True
+check = api.user_timeline(screen_name=user,count=1,include_rts=False)
+print(check)
+"""
+# 直近の200ツイート分を取得しておく
+latest_tweets = api.user_timeline(screen_name=user,count=200,include_rts=False)
+all_tweets.extend(latest_tweets)
+while len(latest_tweets)>0 and today:
+    latest_tweets = api.user_timeline(count=200, max_id=all_tweets[-1].id-1)
+    all_tweets.extend(latest_tweets)
+print(all_tweets)
+
+with open('all_tweets.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['tweet_text', '#characters', '#favorited', '#retweeted', 'hasImage', 'hasBlogLink'])
+    for tweet in all_tweets:
+        if (tweet.text.startswith('RT')) or (tweet.text.startswith('@')):
+            continue # RTとリプライはスキップ
+        else:
+            has_image = 0 # 画像付きのツイートか
+            has_bloglink = 0 # ブログへのリンク付きのツイートか
+            tweet_characters = tweet.text # ツイートの文字列
+            if 'media' in tweet.entities:
+                has_image = 1
+            if len(tweet.entities['urls']) > 0:
+                # urlは、文字数としてカウントしない
+                tweet_characters = tweet_characters.strip(tweet.entities['urls'][0]['url']).strip()
+                if 'nishipy.com' in tweet.entities['urls'][0]['display_url']:
+                    has_bloglink = 1
+            writer.writerow([tweet.text, len(tweet_characters), tweet.favorite_count, tweet.retweet_count, has_image, has_bloglink])
+"""
 
 
+
+
+
+
+"""""
+# 取得するツイートがなくなるまで続ける
+for i in range(3):
+    latest_tweets = api.user_timeline(screen_name="pakkumannoteki",count=200, max_id=all_tweets[-1].id-1)
+    all_tweets.extend(latest_tweets)
+"""
+
+"""
 class make_csv:
     def __init__(self,filename):
         self.filename=filename
@@ -96,9 +142,9 @@ def search(api,word,lang):
             break
         else:
             time.sleep(1)
-
 wordlist=[
     '鬼滅'
     ]
 for word in wordlist:
     search(api,word,lang='ja')
+"""
