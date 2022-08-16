@@ -4,8 +4,18 @@ from unittest import expectedFailure
 import tweepy
 import os
 import datetime
-import time
+from datetime import datetime,timezone
+import pytz
 
+def change_time_JST(u_time):
+    #イギリスのtimezoneを設定するために再定義する
+    utc_time = datetime(u_time.year, u_time.month,u_time.day, \
+    u_time.hour,u_time.minute,u_time.second, tzinfo=timezone.utc)
+    #タイムゾーンを日本時刻に変換
+    jst_time = utc_time.astimezone(pytz.timezone("Asia/Tokyo"))
+    # 文字列で返す
+    str_time = jst_time.strftime("%Y-%m-%d_%H:%M:%S")
+    return str_time
 
 CK = os.environ.get('API_KEY')
 CS = os.environ.get('API_KEY_SECRET')
@@ -31,11 +41,20 @@ all_tweets.extend(latest_tweet)
 print(latest_tweet)
 with open('all_tweets.csv', 'w', newline='') as f:
     writer = csv.writer(f)
-    writer.writerow(['tweet_text', '#characters', '#favorited', '#retweeted', 'hasImage', 'hasBlogLink'])
+    writer.writerow([
+        'tweet_text', 
+        'created_at', 
+        '#characters', 
+        '#favorited', 
+        '#retweeted', 
+        'hasImage', 
+        'hasBlogLink'
+        ])
     for tweet in all_tweets:
         if (tweet.text.startswith('RT')) or (tweet.text.startswith('@')):
             continue # RTとリプライはスキップ
         else:
+            tweet_time = change_time_JST(tweet.created_at)#ツイート時間を日本時間に変換
             has_image = 0 # 画像付きのツイートか
             has_bloglink = 0 # ブログへのリンク付きのツイートか
             tweet_characters = tweet.text # ツイートの文字列
@@ -46,7 +65,9 @@ with open('all_tweets.csv', 'w', newline='') as f:
                 tweet_characters = tweet_characters.strip(tweet.entities['urls'][0]['url']).strip()
                 if 'nishipy.com' in tweet.entities['urls'][0]['display_url']:
                     has_bloglink = 1
-            writer.writerow([tweet.text, len(tweet_characters), tweet.favorite_count, tweet.retweet_count, has_image, has_bloglink])
+            writer.writerow([tweet.text, tweet_time,len(tweet_characters), tweet.favorite_count, tweet.retweet_count, has_image, has_bloglink])
+
+
 """
 
 # 直近の200ツイート分を取得しておく
@@ -56,25 +77,6 @@ while len(latest_tweets)>0 and today:
     latest_tweets = api.user_timeline(count=200, max_id=all_tweets[-1].id-1)
     all_tweets.extend(latest_tweets)
 print(all_tweets)
-
-with open('all_tweets.csv', 'w', newline='') as f:
-    writer = csv.writer(f)
-    writer.writerow(['tweet_text', '#characters', '#favorited', '#retweeted', 'hasImage', 'hasBlogLink'])
-    for tweet in all_tweets:
-        if (tweet.text.startswith('RT')) or (tweet.text.startswith('@')):
-            continue # RTとリプライはスキップ
-        else:
-            has_image = 0 # 画像付きのツイートか
-            has_bloglink = 0 # ブログへのリンク付きのツイートか
-            tweet_characters = tweet.text # ツイートの文字列
-            if 'media' in tweet.entities:
-                has_image = 1
-            if len(tweet.entities['urls']) > 0:
-                # urlは、文字数としてカウントしない
-                tweet_characters = tweet_characters.strip(tweet.entities['urls'][0]['url']).strip()
-                if 'nishipy.com' in tweet.entities['urls'][0]['display_url']:
-                    has_bloglink = 1
-            writer.writerow([tweet.text, len(tweet_characters), tweet.favorite_count, tweet.retweet_count, has_image, has_bloglink])
 """
 
 
