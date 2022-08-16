@@ -17,11 +17,38 @@ api = tweepy.API(auth)
 
 # 全ツイートを入れる空のリストを用意
 user = "pakkumannoteki"
-all_tweets    = []
 today = True
-check = api.user_timeline(screen_name=user,count=1,include_rts=False)
-print(check)
+
+all_tweets = []
+params = {
+    "count": 1,
+    "exclude_replies": True,
+    "include_rts": False
+}
+latest_tweet = api.user_timeline(screen_name=user, params = params)
+all_tweets.extend(latest_tweet)
+
+print(latest_tweet)
+with open('all_tweets.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['tweet_text', '#characters', '#favorited', '#retweeted', 'hasImage', 'hasBlogLink'])
+    for tweet in all_tweets:
+        if (tweet.text.startswith('RT')) or (tweet.text.startswith('@')):
+            continue # RTとリプライはスキップ
+        else:
+            has_image = 0 # 画像付きのツイートか
+            has_bloglink = 0 # ブログへのリンク付きのツイートか
+            tweet_characters = tweet.text # ツイートの文字列
+            if 'media' in tweet.entities:
+                has_image = 1
+            if len(tweet.entities['urls']) > 0:
+                # urlは、文字数としてカウントしない
+                tweet_characters = tweet_characters.strip(tweet.entities['urls'][0]['url']).strip()
+                if 'nishipy.com' in tweet.entities['urls'][0]['display_url']:
+                    has_bloglink = 1
+            writer.writerow([tweet.text, len(tweet_characters), tweet.favorite_count, tweet.retweet_count, has_image, has_bloglink])
 """
+
 # 直近の200ツイート分を取得しておく
 latest_tweets = api.user_timeline(screen_name=user,count=200,include_rts=False)
 all_tweets.extend(latest_tweets)
