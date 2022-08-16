@@ -1,0 +1,7 @@
+TweepyAPIリファレンス:https://tweepy.mkuriki.com/index.html
+わかりやすいAPIリファレンス:https://syncer.jp/Web/API/Twitter/REST_API/GET/statuses/user_timeline/
+検索によるツイートの取得と、自然言語処理による分析の方法:https://qiita.com/kjykndz51518yyy/items/1655b84ab0d4edd3c93c
+スタバのツイートの取得と自然言語処理による分析:https://qiita.com/kenmatsu4/items/02034e5688cc186f224b
+特定の人のツイートを全取得と、CSVファイルに出力:https://nishipy.com/archives/569
+tweepyを活用したCSVファイルの出力:https://toxublog.com/blog/get_tweet_tweepy/
+tweetID生成の秘密:https://www.slideshare.net/pfi/id-15755280
