@@ -12,11 +12,10 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "env": {
-                "API_KEY": "XqVkOi4GCy2e5Ty4PMfEG6GOQ",
-                "API_KEY_SECRET": "zeQWBzL3iJsLHAEzg8gCtJoDKg0hWWpgZ62d8chK7eVQHDY31Z",
-                "BEARER_TOKEN": "AAAAAAAAAAAAAAAAAAAAANZcegEAAAAA51VxgiSL34pFLnO6xp5oHMAuBE4%3D5L2wz65qvVDCiRVQWX9xMkuDVEGEI3dn6tyC9jDCoyAUqvcZjk",
-                "ACCESS_TOKEN": "1502462819861602309-kQuKoUsRRbV4IHvyjvdxAo00UM3lu6",
-                "ACCESS_TOKEN_SECRET": "ekB4jIP0YdYwnpNpL0IO2wc6ceTgjGIG6dy6Xlp32EGp5"
+                "API_KEY": "HoiCbW6wx9JxZku5fN7I85LUH",
+                "API_KEY_SECRET": "au5qu5qin8zrLQUed7xoYkwo15282orKDp8F2dAKB7Kk42e4v5",
+                "ACCESS_TOKEN": "1502462819861602309-09RHSIPSUx0R95CT5zn7HOZNq89gmd",
+                "ACCESS_TOKEN_SECRET": "9GGMj02x6S3PAVydMHPMwAhWxTlSQeJxr08OnBKVvmrDE"
             }
         }
     ]
