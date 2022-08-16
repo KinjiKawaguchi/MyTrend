@@ -28,12 +28,13 @@ auth = tweepy.OAuthHandler(CK, CS)
 auth.set_access_token(AT, AS)
 api = tweepy.API(auth)
 
-current_time = datetime.now()
+current_time = datetime.now(timezone.utc)
 # 全ツイートを入れる空のリストを用意
 all_tweet = []
 array = []
 #ツイート取得時の引数指定
-user = "pakkumannoteki"
+#user = "pakkumannoteki"
+user = "meIuma__mhy"
 params = {
     "count": 1,
     "exclude_replies": True,
@@ -41,15 +42,13 @@ params = {
 }
 array.extend(api.user_timeline(screen_name = user, params = params))
 latest_tweet = array[0]
-tweet_time = change_time_JST(latest_tweet.created_at)
-print(current_time - tweet_time)
-"""""
-print(latest_tweet.created_at)
-print(type(latest_tweet.created_at))
+tweet_time = latest_tweet.created_at
+print(latest_tweet.text)
+print(tweet_time)
+print(type(tweet_time))
 print(current_time)
 print(type(current_time))
-time.sleep(10)
-"""
+print(current_time - tweet_time)
 """
 while True:
     latest_tweet = api.user_timeline(screen_name = user, params = params)
